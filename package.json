@@ -1,0 +1,25 @@
+{
+  "name": "metabase",
+  "version": "1.0.0",
+  "description": "Cypress Test for Metabase",
+  "main": "index.js",
+  "scripts": {
+    "test": "cypress run"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anton578/metabase.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "cypress": "^10.3.0"
+  },
+  "dependencies": {
+    "uuid": "^8.3.2"
+  },
+  "bugs": {
+    "url": "https://github.com/anton578/metabase/issues"
+  },
+  "homepage": "https://github.com/anton578/metabase#readme"
+}

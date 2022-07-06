@@ -1,0 +1,46 @@
+name: Cypress Tests
+on: 
+  push:
+  schedule:
+    - cron: '0 0 * * * '
+jobs:
+  cypress-run:
+    runs-on: ubuntu-latest
+    container: cypress/browsers:node12.18.3-chrome87-ff82
+    
+    # services:
+    #   mongodb:
+    #     image: metabase/qa-databases:mongo-sample-4.0
+    #     ports:
+    #     - 27017:27017
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Run Metabase Docker
+        uses: addnab/docker-run-action@v3
+        with:
+            image: metabase/metabase:latest
+            options: -d -p 3000:3000 --name metabase
+            run: |
+              /app/run_metabase.sh
+
+      - name: Run Metabase MongoDB with Docker
+        uses: addnab/docker-run-action@v3
+        with:
+            image: metabase/qa-databases:mongo-sample-4.0
+            options: -d -p 27017:27017 --name mongodb
+            run: |
+              docker-entrypoint.sh
+
+      - name: Wait until server is running
+        run: sleep 30
+
+      # Install NPM dependencies, cache them correctly
+      # and run all Cypress tests
+      - name: Cypress run
+        uses: cypress-io/github-action@v4
+        env:
+          CI: metabase
+          HOST: '172.17.0.2'
